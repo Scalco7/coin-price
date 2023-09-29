@@ -30,8 +30,10 @@ class CoinRepository implements ICoinRepository {
       final double brazilCoinValue =
           valueJson.where((e) => e['asset_id'] == "BRL").first['price_usd'];
 
-      final List<Coin> list =
-          valueJson.where((obj) => obj['type_is_crypto'] == 0).map((e) {
+      final List<Coin> list = valueJson
+          .where((obj) => obj['type_is_crypto'] == 0)
+          .take(10)
+          .map((e) {
         final img = imageJson
             .where((img) => img['asset_id'] == e['asset_id'])
             .firstOrNull;
