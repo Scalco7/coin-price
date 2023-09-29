@@ -11,12 +11,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      color: Colors.white,
-      debugShowCheckedModeBanner: false,
-      home: HomeContainer(
-        repository: CoinRepository(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        color: Colors.white,
+        debugShowCheckedModeBanner: false,
+        home: HomeContainer(
+          repository: CoinRepository(),
+        ),
       ),
     );
   }

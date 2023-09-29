@@ -2,9 +2,30 @@ import 'package:coin_price/common/models/coin.dart';
 import 'package:coin_price/features/screens/home/widgets/coin_widget.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.coins});
   final List<Coin> coins;
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late List<Coin> coinsList;
+
+  void filterList(String name) {
+    setState(() {
+      coinsList = widget.coins
+          .where((coin) => coin.name.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  void initState() {
+    coinsList = widget.coins;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +64,24 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: TextField(
-                          cursorColor: Colors.black.withOpacity(0.6),
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: const InputDecoration(
-                            fillColor: Colors.white,
-                            label: Text("Pesquisar..."),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: InputBorder.none,
+                      Flexible(
+                        child: Center(
+                          child: TextField(
+                            onChanged: (String value) => filterList(value),
+                            cursorColor: Colors.black.withOpacity(0.6),
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: const InputDecoration(
+                              fillColor: Colors.white,
+                              label: Text("Pesquisar..."),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          decoration: const BoxDecoration(color: Colors.amber),
-                          child: const Icon(Icons.search),
-                        ),
+                        child: const Icon(Icons.search),
                       ),
                     ],
                   ),
@@ -75,7 +96,7 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                children: coins.map((e) => CoinWidget(coin: e)).toList(),
+                children: coinsList.map((e) => CoinWidget(coin: e)).toList(),
               ),
             ),
           ],
